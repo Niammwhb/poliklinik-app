@@ -1,20 +1,46 @@
 <x-layouts.app title="Data Dokter">
 
     {{-- Header --}}
-    <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-slate-800">
-            Data Dokter
-        </h2>
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-6">
 
-        <a href="{{ route('dokter.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary/90 
-                  text-white rounded-xl text-sm font-semibold transition">
-            <i class="fas fa-plus text-sm"></i>
-            Tambah Dokter
-        </a>
+        {{-- Title --}}
+        <div>
+            <h2 class="text-3xl font-bold text-slate-800">
+                Data Dokter
+            </h2>
+            <p class="text-sm text-slate-500 mt-1">
+                Kelola data dokter yang terdaftar di poliklinik.
+            </p>
+        </div>
+
+        {{-- Action Button --}}
+        <div class="flex items-center gap-3">
+
+            {{-- Export Excel --}}
+            <a href="{{ url('/export/dokter') }}"
+                class="inline-flex items-center gap-2 px-5 py-3 bg-white border border-slate-200
+                hover:border-green-500 hover:bg-green-50 text-green-600 rounded-xl
+                text-sm font-semibold shadow-sm transition">
+
+                <i class="fas fa-file-excel text-sm"></i>
+                Export Excel
+            </a>
+
+            {{-- Tambah Dokter --}}
+            <a href="{{ route('dokter.create') }}"
+                class="inline-flex items-center gap-2 px-5 py-3 bg-primary hover:bg-primary/90
+                text-white rounded-xl text-sm font-semibold shadow-md transition">
+
+                <i class="fas fa-plus text-sm"></i>
+                Tambah Dokter
+            </a>
+
+        </div>
+
     </div>
 
     {{-- Card Table --}}
-    <div class="card bg-base-100 shadow-md rounded-2 border">
+    <div class="card bg-base-100 shadow-md rounded-2xl border border-slate-200">
         <div class="card-body p-0">
 
             <div class="overflow-x-auto">
@@ -69,7 +95,8 @@
                                 <div class="inline-flex items-center gap-2">
 
                                     {{-- Edit --}}
-                                    <a href="{{ route('dokter.edit', $dokter->id) }}" class="inline-flex items-center gap-1 px-3 py-2 
+                                    <a href="{{ route('dokter.edit', $dokter->id) }}"
+                                        class="inline-flex items-center gap-1 px-3 py-2 
                                         bg-amber-500 hover:bg-amber-600 
                                         text-white rounded-lg text-xs font-semibold transition">
                                         <i class="fas fa-pen-to-square text-xs"></i>
@@ -82,9 +109,10 @@
                                         @method('DELETE')
 
                                         <button type="submit"
-                                            onclick="return confirm('Yakin ingin menghapus dokter ini?')" class="inline-flex items-center gap-1 px-3 py-2 
-                                             bg-red-500 hover:bg-red-600 
-                                             text-white rounded-lg text-xs font-semibold transition">
+                                            onclick="return confirm('Yakin ingin menghapus dokter ini?')"
+                                            class="inline-flex items-center gap-1 px-3 py-2 
+                                            bg-red-500 hover:bg-red-600 
+                                            text-white rounded-lg text-xs font-semibold transition">
                                             <i class="fas fa-trash text-xs"></i>
                                             Hapus
                                         </button>

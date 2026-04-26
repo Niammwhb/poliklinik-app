@@ -6,20 +6,28 @@ use App\Http\Controllers\Controller;
 use App\Models\JadwalPeriksa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Events\AntrianUpdated;
 
 class JadwalPeriksaController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $dokter = Auth::user();
-        $jadwalPeriksas = JadwalPeriksa::where('id_dokter', $dokter->id)->orderBy('hari')->get();
+
+        $jadwalPeriksas = JadwalPeriksa::where('id_dokter', $dokter->id)
+            ->orderBy('hari')
+            ->get();
+
         return view('dokter.jadwal-periksa.index', compact('jadwalPeriksas'));
     }
 
-    public function create(){
+    public function create()
+    {
         return view('dokter.jadwal-periksa.create');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $request->validate([
             'hari' => 'required',
             'jam_mulai' => 'required',
@@ -38,12 +46,15 @@ class JadwalPeriksaController extends Controller
             ->with('type', 'success');
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         $jadwalPeriksa = JadwalPeriksa::findOrFail($id);
+
         return view('dokter.jadwal-periksa.edit', compact('jadwalPeriksa'));
     }
 
-    public function update(Request $request, string $id){
+    public function update(Request $request, string $id)
+    {
         $request->validate([
             'hari' => 'required',
             'jam_mulai' => 'required',
@@ -51,6 +62,7 @@ class JadwalPeriksaController extends Controller
         ]);
 
         $jadwalPeriksa = JadwalPeriksa::findOrFail($id);
+
         $jadwalPeriksa->update([
             'hari' => $request->hari,
             'jam_mulai' => $request->jam_mulai,
@@ -62,12 +74,30 @@ class JadwalPeriksaController extends Controller
             ->with('type', 'success');
     }
 
-    public function destroy(string $id){
+    public function destroy(string $id)
+    {
         $jadwalPeriksa = JadwalPeriksa::findOrFail($id);
         $jadwalPeriksa->delete();
 
         return redirect()->route('jadwal-periksa.index')
             ->with('message', 'Berhasil Melakukan Hapus Data')
+            ->with('type', 'success');
+    }
+
+    public function next($id)
+    {
+        $jadwal = JadwalPeriksa::findOrFail($id);
+
+        $jadwal->nomor_sekarang += 1;
+        $jadwal->save();
+
+        broadcast(new AntrianUpdated([
+            'id' => $jadwal->id,
+            'nomor' => $jadwal->nomor_sekarang
+        ]));
+
+        return redirect()->back()
+            ->with('message', 'Nomor antrian berhasil dipanggil')
             ->with('type', 'success');
     }
 }

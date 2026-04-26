@@ -1,22 +1,46 @@
 <x-layouts.app title="Data Pasien">
 
     {{-- Header --}}
-    <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-slate-800">
-            Data Pasien
-        </h2>
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-6">
 
-        <a href="{{ route('pasien.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5
-                  bg-primary hover:bg-primary/90
-                  text-white text-sm font-semibold
-                  rounded-xl transition">
-            <i class="fas fa-plus text-xs"></i>
-            Tambah Pasien
-        </a>
+        {{-- Title --}}
+        <div>
+            <h2 class="text-3xl font-bold text-slate-800">
+                Data Pasien
+            </h2>
+            <p class="text-sm text-slate-500 mt-1">
+                Kelola data pasien yang terdaftar di poliklinik.
+            </p>
+        </div>
+
+        {{-- Action Button --}}
+        <div class="flex items-center gap-3">
+
+            {{-- Export Excel --}}
+            <a href="{{ url('/export/pasien') }}"
+                class="inline-flex items-center gap-2 px-5 py-3 bg-white border border-slate-200
+                hover:border-green-500 hover:bg-green-50 text-green-600 rounded-xl
+                text-sm font-semibold shadow-sm transition">
+
+                <i class="fas fa-file-excel text-sm"></i>
+                Export Excel
+            </a>
+
+            {{-- Tambah Pasien --}}
+            <a href="{{ route('pasien.create') }}"
+                class="inline-flex items-center gap-2 px-5 py-3 bg-primary hover:bg-primary/90
+                text-white text-sm font-semibold rounded-xl shadow-md transition">
+
+                <i class="fas fa-plus text-sm"></i>
+                Tambah Pasien
+            </a>
+
+        </div>
+
     </div>
 
     {{-- Card --}}
-    <div class="card bg-base-100 shadow-md rounded-2 border">
+    <div class="card bg-base-100 shadow-md rounded-2xl border border-slate-200">
         <div class="card-body p-0">
 
             <div class="overflow-x-auto">
@@ -36,6 +60,7 @@
 
                     {{-- Table Body --}}
                     <tbody class="text-sm text-slate-700">
+
                         @forelse($pasiens as $pasien)
                         <tr class="border-t border-slate-100 hover:bg-slate-50 transition">
 
@@ -63,10 +88,12 @@
                                 <div class="flex justify-end gap-2">
 
                                     {{-- Edit --}}
-                                    <a href="{{ route('pasien.edit', $pasien->id) }}" class="inline-flex items-center gap-1 px-4 py-2
-                                              bg-amber-500 hover:bg-amber-600
-                                              text-white text-xs font-semibold
-                                              rounded-lg transition">
+                                    <a href="{{ route('pasien.edit', $pasien->id) }}"
+                                        class="inline-flex items-center gap-1 px-4 py-2
+                                        bg-amber-500 hover:bg-amber-600
+                                        text-white text-xs font-semibold
+                                        rounded-lg transition">
+
                                         <i class="fas fa-pen text-xs"></i>
                                         Edit
                                     </a>
@@ -77,10 +104,12 @@
                                         @method('DELETE')
 
                                         <button type="submit"
-                                            onclick="return confirm('Yakin ingin menghapus pasien ini?')" class="inline-flex items-center gap-1 px-4 py-2
-                                                   bg-red-500 hover:bg-red-600
-                                                   text-white text-xs font-semibold
-                                                   rounded-lg transition">
+                                            onclick="return confirm('Yakin ingin menghapus pasien ini?')"
+                                            class="inline-flex items-center gap-1 px-4 py-2
+                                            bg-red-500 hover:bg-red-600
+                                            text-white text-xs font-semibold
+                                            rounded-lg transition">
+
                                             <i class="fas fa-trash text-xs"></i>
                                             Hapus
                                         </button>
@@ -90,6 +119,7 @@
                             </td>
 
                         </tr>
+
                         @empty
                         <tr>
                             <td colspan="6" class="text-center py-12 text-slate-400">
@@ -98,6 +128,7 @@
                             </td>
                         </tr>
                         @endforelse
+
                     </tbody>
 
                 </table>

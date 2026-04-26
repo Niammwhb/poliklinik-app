@@ -7,20 +7,29 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-
 class AuthController extends Controller
 {
+    /**
+     * Form Login
+     */
     public function showLogin()
     {
         return view('auth.login');
     }
 
+    /**
+     * Proses Login
+     */
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
+
+            $request->session()->regenerate();
+
             $user = Auth::user();
+
             if ($user->role == 'admin') {
                 return redirect()->route('admin.dashboard');
             } elseif ($user->role == 'dokter') {
@@ -30,42 +39,65 @@ class AuthController extends Controller
             }
         }
 
-        return back()->withErrors(['email' => 'Email atau Password Salah !']);
+        return back()->withErrors([
+            'email' => 'Email atau Password Salah!'
+        ])->withInput();
     }
 
+    /**
+     * Form Register
+     */
     public function showRegister()
     {
         return view('auth.register');
     }
 
-
+    /**
+     * Proses Register Pasien
+     */
     public function register(Request $request)
-{
+    {
+        $request->validate([
+            'nama'     => 'required|string|max:255',
+            'alamat'   => 'required|string',
+            'no_ktp'   => 'required|numeric|unique:users,no_ktp',
+            'no_hp'    => 'required|numeric',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|min:6'
+        ]);
 
-    $request->validate([
-        'nama'     => 'required|string|max:255',
-        'alamat'   => 'required|string',
-        'no_ktp'   => 'required|numeric|unique:users,no_ktp',
-        'no_hp'    => 'required|numeric',
-        'email'    => 'required|email|unique:users,email',
-        'password' => 'required|min:6'
-    ]);
+        $lastPasien = User::where('role', 'pasien')
+            ->orderBy('id', 'desc')
+            ->first();
 
-    $lastPasien = User::where('role', 'pasien')->orderBy('id', 'desc')->first();
-    $lastId = $lastPasien ? $lastPasien->id + 1 : 1;
-    $no_rm = date('Ym') . '-' . str_pad($lastId, 3, '0', STR_PAD_LEFT);
+        $lastId = $lastPasien ? $lastPasien->id + 1 : 1;
 
-    User::create([
-        'nama'     => $request->nama,
-        'alamat'   => $request->alamat,
-        'no_ktp'   => $request->no_ktp,
-        'no_hp'    => $request->no_hp,
-        'no_rm'    => $no_rm,
-        'role'     => 'pasien',
-        'email'    => $request->email,
-        'password' => Hash::make($request->password),
-    ]);
+        $no_rm = date('Ym') . '-' . str_pad($lastId, 3, '0', STR_PAD_LEFT);
 
-    return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
-}
+        User::create([
+            'nama'     => $request->nama,
+            'alamat'   => $request->alamat,
+            'no_ktp'   => $request->no_ktp,
+            'no_hp'    => $request->no_hp,
+            'no_rm'    => $no_rm,
+            'role'     => 'pasien',
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()
+            ->route('login')
+            ->with('success', 'Registrasi berhasil! Silakan login.');
+    }
+
+   
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
+    }
 }

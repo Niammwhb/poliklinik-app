@@ -2,20 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-   class User extends Authenticatable
+class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
+     * Mass Assignable
      */
     protected $fillable = [
         'nama',
@@ -27,13 +23,10 @@ use Illuminate\Notifications\Notifiable;
         'id_poli',
         'email',
         'password',
-
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * Hidden Attributes
      */
     protected $hidden = [
         'password',
@@ -41,9 +34,7 @@ use Illuminate\Notifications\Notifiable;
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Casts
      */
     protected function casts(): array
     {
@@ -53,14 +44,43 @@ use Illuminate\Notifications\Notifiable;
         ];
     }
 
+    /**
+     * Relasi ke Poli
+     */
     public function poli()
     {
         return $this->belongsTo(Poli::class, 'id_poli');
     }
 
+    /**
+     * Relasi Jadwal Periksa (Dokter)
+     */
     public function jadwalPeriksa()
     {
         return $this->hasMany(JadwalPeriksa::class, 'id_dokter');
     }
 
+    /**
+     * Scope Role Dokter
+     */
+    public function scopeDokter($query)
+    {
+        return $query->where('role', 'dokter');
+    }
+
+    /**
+     * Scope Role Pasien
+     */
+    public function scopePasien($query)
+    {
+        return $query->where('role', 'pasien');
+    }
+
+    /**
+     * Scope Role Admin
+     */
+    public function scopeAdmin($query)
+    {
+        return $query->where('role', 'admin');
+    }
 }

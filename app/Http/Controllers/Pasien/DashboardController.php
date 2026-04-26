@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Pasien;
-
 use App\Http\Controllers\Controller;
 use App\Models\DaftarPoli;
 use App\Models\JadwalPeriksa;
@@ -13,12 +11,18 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $antrianAktif = DaftarPoli::where('id_pasien', $user->id)
-    ->latest()
-    ->first();
+        $antrianAktif = DaftarPoli::with([
+                'jadwalPeriksa.dokter.poli'
+            ])
+            ->where('id_pasien', $user->id)
+            ->latest()
+            ->first();
 
-        // semua jadwal dokter
-        $jadwals = JadwalPeriksa::with('dokter')->get();
+        $jadwals = JadwalPeriksa::with([
+                'dokter.poli'
+            ])
+            ->orderBy('hari')
+            ->get();
 
         return view('pasien.dashboard', compact(
             'user',

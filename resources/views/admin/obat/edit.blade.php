@@ -33,7 +33,7 @@
                             name="nama_obat"
                             value="{{ old('nama_obat', $obat->nama_obat) }}"
                             placeholder="Masukkan nama obat..."
-                            class="w-full px-4 py-2 border-2 rounded-lg p-2 focus:border-primary focus:outline-none"
+                            class="w-full px-4 py-2 border-2 rounded-lg focus:border-primary focus:outline-none"
                             required>
                     </div>
 
@@ -47,7 +47,7 @@
                             name="kemasan"
                             value="{{ old('kemasan', $obat->kemasan) }}"
                             placeholder="Contoh: Strip, Botol, Tube..."
-                            class="w-full px-4 py-2 border-2 rounded-lg p-2 focus:border-primary focus:outline-none">
+                            class="w-full px-4 py-2 border-2 rounded-lg focus:border-primary focus:outline-none">
                     </div>
 
                 </div>
@@ -61,7 +61,7 @@
                             Harga <span class="text-red-500">*</span>
                         </label>
 
-                        <div class="flex items-center border-2 rounded-lg p-2 px-4 py-2 focus-within:border-primary">
+                        <div class="flex items-center border-2 rounded-lg px-4 py-2 focus-within:border-primary">
                             <span class="text-slate-500 text-sm font-semibold mr-2">
                                 Rp
                             </span>
@@ -76,7 +76,7 @@
                         </div>
                     </div>
 
-                    {{-- STOK --}}
+                    {{-- Stok --}}
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1">
                             Stok <span class="text-red-500">*</span>
@@ -87,8 +87,27 @@
                             value="{{ old('stok', $obat->stok) }}"
                             placeholder="0"
                             min="0"
-                            class="w-full px-4 py-2 border-2 rounded-lg p-2 focus:border-primary focus:outline-none"
+                            class="w-full px-4 py-2 border-2 rounded-lg focus:border-primary focus:outline-none"
                             required>
+
+                        {{-- Status stok --}}
+                        <div class="mt-2">
+                            @if($obat->stok == 0)
+                                <span class="inline-block px-3 py-1 text-xs font-bold rounded-full bg-red-100 text-red-600">
+                                    Stok Habis
+                                </span>
+
+                            @elseif($obat->stok <= 5)
+                                <span class="inline-block px-3 py-1 text-xs font-bold rounded-full bg-yellow-100 text-yellow-700">
+                                    Stok Menipis
+                                </span>
+
+                            @else
+                                <span class="inline-block px-3 py-1 text-xs font-bold rounded-full bg-green-100 text-green-600">
+                                    Stok Aman
+                                </span>
+                            @endif
+                        </div>
                     </div>
 
                 </div>
@@ -97,13 +116,13 @@
                 <div class="flex gap-3">
 
                     <button type="submit"
-                        class="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-white font-semibold text-sm transition">
+                        class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white font-semibold text-sm transition">
                         <i class="fas fa-save mr-1"></i>
                         Update
                     </button>
 
                     <a href="{{ route('obat.index') }}"
-                        class="px-6 py-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold text-sm transition">
+                        class="px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold text-sm transition">
                         Batal
                     </a>
 

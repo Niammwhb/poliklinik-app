@@ -27,20 +27,33 @@ class PoliController extends Controller
     public function submit(Request $request)
     {
         $request->validate([
-            'id_poli' => 'required|exists:poli,id',
+            'id_poli'   => 'required|exists:poli,id',
             'id_jadwal' => 'required|exists:jadwal_periksa,id',
-            'keluhan' => 'nullable|string',
+            'keluhan'   => 'nullable|string',
             'id_pasien' => 'required|exists:users,id',
         ]);
 
+        $antrianAktif = DaftarPoli::where('id_pasien', $request->id_pasien)
+            ->whereDoesntHave('periksa')
+            ->first();
+
+        if ($antrianAktif) {
+            return redirect()->back()
+                ->with('message', 'Anda masih memiliki antrian aktif. Selesaikan pemeriksaan terlebih dahulu.')
+                ->with('type', 'error');
+        }
+
         $jumlahSudahDaftar = DaftarPoli::where('id_jadwal', $request->id_jadwal)->count();
-        $daftar = DaftarPoli::create([
-            'id_pasien' => $request->id_pasien,
-            'id_jadwal' => $request->id_jadwal,
-            'keluhan' => $request->keluhan,
-            'no_antrian' => $jumlahSudahDaftar + 1,
+
+        DaftarPoli::create([
+            'id_pasien'   => $request->id_pasien,
+            'id_jadwal'   => $request->id_jadwal,
+            'keluhan'     => $request->keluhan,
+            'no_antrian'  => $jumlahSudahDaftar + 1,
         ]);
 
-        return redirect()->back()->with('message', 'Berhasil Mendaftar ke Poli')->with('type', 'success');
+        return redirect()->back()
+            ->with('message', 'Berhasil Mendaftar ke Poli')
+            ->with('type', 'success');
     }
 }

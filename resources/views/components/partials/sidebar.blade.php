@@ -57,31 +57,38 @@
             </a>
 
             <a href="{{ route('polis.index') }}"
-            class="{{ $baseLink }} {{ request()->routeIs('polis.*') ? $active : $inactive }}">
-            <i class="fas fa-hospital w-4 text-center"></i>
-            Manajemen Poli
-        </a>
+                class="{{ $baseLink }} {{ request()->routeIs('polis.*') ? $active : $inactive }}">
+                <i class="fas fa-hospital w-4 text-center"></i>
+                Manajemen Poli
+            </a>
 
-        <a href="{{ route('dokter.index') }}"
-            class="{{ $baseLink }} {{ request()->routeIs('dokter.*') ? $active : $inactive }}">
-            <i class="fas fa-user-doctor w-4 text-center"></i>
-            Manajemen Dokter
-        </a>
+            <a href="{{ route('dokter.index') }}"
+                class="{{ $baseLink }} {{ request()->routeIs('dokter.*') ? $active : $inactive }}">
+                <i class="fas fa-user-doctor w-4 text-center"></i>
+                Manajemen Dokter
+            </a>
 
-        <a href="{{ route('pasien.index') }}"
-            class="{{ $baseLink }} {{ request()->routeIs('pasien.*') ? $active : $inactive }}">
-            <i class="fas fa-bed-pulse w-4 text-center"></i>
-            Manajemen Pasien
-        </a>
+            <a href="{{ route('pasien.index') }}"
+                class="{{ $baseLink }} {{ request()->routeIs('pasien.*') ? $active : $inactive }}">
+                <i class="fas fa-bed-pulse w-4 text-center"></i>
+                Manajemen Pasien
+            </a>
 
-        <a href="{{ route('obat.index') }}"
-            class="{{ $baseLink }} {{ request()->routeIs('obat.*') ? $active : $inactive }}">
-            <i class="fas fa-pills w-4 text-center"></i>
-            Manajemen obat
-        </a>
+            <a href="{{ route('obat.index') }}"
+                class="{{ $baseLink }} {{ request()->routeIs('obat.*') ? $active : $inactive }}">
+                <i class="fas fa-pills w-4 text-center"></i>
+                Manajemen Obat
+            </a>
+
+            <a href="{{ route('admin.pembayaran') }}"
+                class="{{ $baseLink }} {{ request()->routeIs('admin.pembayaran*') ? $active : $inactive }}">
+                <i class="fas fa-money-check-dollar w-4 text-center"></i>
+                Pembayaran
+            </a>
 
         </div>
         @endif
+
 
 
         {{-- ================= PASIEN ================= --}}
@@ -101,8 +108,14 @@
 
             <a href="{{ route('pasien.daftar') }}"
                 class="{{ $baseLink }} {{ request()->routeIs('pasien.daftar') ? $active : $inactive }}">
-                <i class="fas fa-house-medical w-4 text-center"></i>
+                <i class="fas fa-calendar-check w-4 text-center"></i>
                 Pendaftaran Periksa
+            </a>
+
+            <a href="{{ route('pasien.riwayat.index') }}"
+                class="{{ $baseLink }} {{ request()->routeIs('pasien.riwayat.*') ? $active : $inactive }}">
+                <i class="fas fa-clock-rotate-left w-4 text-center"></i>
+                Riwayat Pendaftaran
             </a>
 
             <a href="{{ route('pasien.pembayaran') }}"
@@ -111,9 +124,9 @@
                 Pembayaran
             </a>
 
-
         </div>
         @endif
+
 
 
         {{-- ================= DOKTER ================= --}}
@@ -133,14 +146,27 @@
 
             <a href="{{ route('jadwal-periksa.index') }}"
                 class="{{ $baseLink }} {{ request()->routeIs('jadwal-periksa.*') ? $active : $inactive }}">
-                <i class="fas fa-stethoscope w-4 text-center"></i>
+                <i class="fas fa-calendar-days w-4 text-center"></i>
                 Jadwal Periksa
+            </a>
+
+            <a href="{{ route('dokter.periksa.index') }}"
+                class="{{ $baseLink }} {{ request()->routeIs('dokter.periksa.*') ? $active : $inactive }}">
+                <i class="fas fa-notes-medical w-4 text-center"></i>
+                Periksa Pasien
+            </a>
+
+            <a href="{{ route('dokter.riwayat.index') }}"
+                class="{{ $baseLink }} {{ request()->routeIs('dokter.riwayat.*') ? $active : $inactive }}">
+                <i class="fas fa-folder-open w-4 text-center"></i>
+                Riwayat Pasien
             </a>
 
         </div>
         @endif
 
     </div>
+
 
 
     {{-- ================= LOGOUT ================= --}}

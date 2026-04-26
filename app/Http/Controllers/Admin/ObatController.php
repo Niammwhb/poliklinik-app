@@ -23,27 +23,28 @@ class ObatController extends Controller
     {
         $request->validate([
             'nama_obat' => 'required|string',
-            'kemasan'   => 'required|string',
-            'harga'     => 'required|integer',
+            'kemasan'   => 'nullable|string',
+            'harga'     => 'required|integer|min:0',
+            'stok'      => 'required|integer|min:0',
         ]);
 
         Obat::create([
             'nama_obat' => $request->nama_obat,
             'kemasan'   => $request->kemasan,
-            'harga'     => $request->harga
+            'harga'     => $request->harga,
+            'stok'      => $request->stok,
         ]);
 
         return redirect()->route('obat.index')
-            ->with('message', 'Data Obat Berhasil dibuat')
+            ->with('message', 'Data Obat berhasil dibuat')
             ->with('type', 'success');
     }
 
     public function edit(string $id)
     {
         $obat = Obat::findOrFail($id);
-        return view('admin.obat.edit')->with([
-            'obat' => $obat
-        ]);
+
+        return view('admin.obat.edit', compact('obat'));
     }
 
     public function update(Request $request, string $id)
@@ -51,14 +52,17 @@ class ObatController extends Controller
         $request->validate([
             'nama_obat' => 'required|string',
             'kemasan'   => 'nullable|string',
-            'harga'     => 'required|integer',
+            'harga'     => 'required|integer|min:0',
+            'stok'      => 'required|integer|min:0',
         ]);
 
         $obat = Obat::findOrFail($id);
+
         $obat->update([
             'nama_obat' => $request->nama_obat,
             'kemasan'   => $request->kemasan,
-            'harga'     => $request->harga
+            'harga'     => $request->harga,
+            'stok'      => $request->stok,
         ]);
 
         return redirect()->route('obat.index')
@@ -72,7 +76,7 @@ class ObatController extends Controller
         $obat->delete();
 
         return redirect()->route('obat.index')
-            ->with('message', 'Data Obat berhasil di Hapus')
+            ->with('message', 'Data Obat berhasil dihapus')
             ->with('type', 'success');
     }
 }

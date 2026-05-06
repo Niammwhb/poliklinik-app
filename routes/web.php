@@ -8,11 +8,9 @@ use App\Http\Controllers\Admin\DokterController;
 use App\Http\Controllers\Admin\PasienController;
 use App\Http\Controllers\Admin\ObatController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-
 use App\Http\Controllers\Dokter\DashboardController as DokterDashboardController;
 use App\Http\Controllers\Dokter\JadwalPeriksaController;
 use App\Http\Controllers\Dokter\PeriksaController;
-
 use App\Http\Controllers\Pasien\PoliController as PasienPoliController;
 use App\Http\Controllers\Pasien\DashboardController;
 use App\Http\Controllers\Pasien\RiwayatController;
@@ -21,12 +19,6 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\ExportController;
 
 
-
-/*
-|--------------------------------------------------------------------------
-| PUBLIC
-|--------------------------------------------------------------------------
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,13 +32,6 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-
-
-/*
-|--------------------------------------------------------------------------
-| ADMIN
-|--------------------------------------------------------------------------
-*/
 
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
@@ -69,41 +54,21 @@ Route::middleware(['auth', 'role:admin'])
 
 
 
-/*
-|--------------------------------------------------------------------------
-| DOKTER
-|--------------------------------------------------------------------------
-*/
-
 Route::middleware(['auth', 'role:dokter'])
     ->prefix('dokter')
     ->group(function () {
 
-        /*
-        |--------------------------------------------------------------------------
-        | Dashboard Dokter
-        |--------------------------------------------------------------------------
-        */
+    
         Route::get('/dashboard', [DokterDashboardController::class, 'index'])
             ->name('dokter.dashboard');
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Jadwal Periksa
-        |--------------------------------------------------------------------------
-        */
         Route::resource('jadwal-periksa', JadwalPeriksaController::class);
 
         Route::get('/jadwal-periksa/next/{id}', [JadwalPeriksaController::class, 'next'])
             ->name('jadwal-periksa.next');
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Periksa Pasien
-        |--------------------------------------------------------------------------
-        */
         Route::get('/periksa', [PeriksaController::class, 'index'])
             ->name('dokter.periksa.index');
 
@@ -126,13 +91,6 @@ Route::middleware(['auth', 'role:dokter'])
             ->name('dokter.periksa.destroy');
     });
 
-
-
-/*
-|--------------------------------------------------------------------------
-| PASIEN
-|--------------------------------------------------------------------------
-*/
 
 Route::middleware(['auth', 'role:pasien'])
     ->prefix('pasien')
@@ -161,12 +119,6 @@ Route::middleware(['auth', 'role:pasien'])
     });
 
 
-
-/*
-|--------------------------------------------------------------------------
-| EXPORT EXCEL
-|--------------------------------------------------------------------------
-*/
 
 Route::middleware(['auth'])->group(function () {
 

@@ -23,7 +23,7 @@ class RiwayatController extends Controller
 
     public function detail($id)
     {
-        $data = DaftarPoli::with([
+       $data = DaftarPoli::with([
             'jadwalPeriksa.dokter.poli',
             'periksas.detailPeriksas.obat'
         ])

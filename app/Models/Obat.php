@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Obat extends Model
 {
     protected $table = 'obat';
-
-    protected $fillable = [
+protected $fillable = [
         'nama_obat',
         'kemasan',
         'harga',
@@ -20,3 +19,5 @@ class Obat extends Model
         return $this->hasMany(DetailPeriksa::class, 'id_obat');
     }
 }
+
+//UTS

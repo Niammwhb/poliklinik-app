@@ -43,6 +43,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::resource('polis', PoliController::class);
         Route::resource('dokter', DokterController::class);
         Route::resource('pasien', PasienController::class);
+        
         Route::resource('obat', ObatController::class);
 
         Route::get('/pembayaran', [PembayaranController::class, 'indexAdmin'])
@@ -128,3 +129,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/export/jadwal', [ExportController::class, 'jadwal']);
     Route::get('/export/riwayat', [ExportController::class, 'riwayat']);
 });
+
+
+//UTS

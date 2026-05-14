@@ -58,12 +58,14 @@ class ObatController extends Controller
 
         $obat = Obat::findOrFail($id);
 
-        $obat->update([
+       
+         $obat->update([
             'nama_obat' => $request->nama_obat,
             'kemasan'   => $request->kemasan,
             'harga'     => $request->harga,
             'stok'      => $request->stok,
         ]);
+        
 
         return redirect()->route('obat.index')
             ->with('message', 'Data Obat berhasil di edit')
@@ -80,3 +82,6 @@ class ObatController extends Controller
             ->with('type', 'success');
     }
 }
+
+
+//UTS
